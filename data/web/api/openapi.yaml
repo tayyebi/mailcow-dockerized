@@ -625,12 +625,6 @@ paths:
                 plus_addressing_out:
                   description: allow sending as user+tag@ addresses in this domain
                   type: boolean
-                dot_addressing_in:
-                  description: accept mail for u.s.e.r@ addresses (dots in the local part are ignored) in this domain
-                  type: boolean
-                dot_addressing_out:
-                  description: allow sending as u.s.e.r@ addresses in this domain
-                  type: boolean
                 rl_frame:
                   enum:
                     - s
@@ -1191,12 +1185,6 @@ paths:
                   type: boolean
                 plus_addressing_out:
                   description: allow sending as user+tag@ addresses in this mailbox (the domain must allow it as well)
-                  type: boolean
-                dot_addressing_in:
-                  description: accept mail for u.s.e.r@ addresses (dots in the local part are ignored) in this mailbox (the domain must allow it as well)
-                  type: boolean
-                dot_addressing_out:
-                  description: allow sending as u.s.e.r@ addresses in this mailbox (the domain must allow it as well)
                   type: boolean
               type: object
       summary: Create mailbox
@@ -3252,12 +3240,6 @@ paths:
                     plus_addressing_out:
                       description: allow sending as user+tag@ addresses in this domain
                       type: boolean
-                    dot_addressing_in:
-                      description: accept mail for u.s.e.r@ addresses (dots in the local part are ignored) in this domain
-                      type: boolean
-                    dot_addressing_out:
-                      description: allow sending as u.s.e.r@ addresses in this domain
-                      type: boolean
                     relayhost:
                       description: id of relayhost
                       type: number
@@ -3572,12 +3554,6 @@ paths:
                       type: boolean
                     plus_addressing_out:
                       description: allow sending as user+tag@ addresses in this mailbox (the domain must allow it as well)
-                      type: boolean
-                    dot_addressing_in:
-                      description: accept mail for u.s.e.r@ addresses (dots in the local part are ignored) in this mailbox (the domain must allow it as well)
-                      type: boolean
-                    dot_addressing_out:
-                      description: allow sending as u.s.e.r@ addresses in this mailbox (the domain must allow it as well)
                       type: boolean
                   type: object
                 items:
@@ -4349,45 +4325,6 @@ paths:
       description: ""
       operationId: Get Domain Admins
       summary: Get Domain Admins
-  "/api/v1/get/domain/dot-collisions/{domain}":
-    get:
-      description: >-
-        Lists mailboxes of a domain that only differ by dots in their local part.
-        Dot addressing cannot be switched on for the domain while this list is not empty.
-      operationId: Get dot addressing collisions
-      parameters:
-        - description: name of domain
-          in: path
-          name: domain
-          required: true
-          schema:
-            type: string
-        - description: e.g. api-key-string
-          example: api-key-string
-          in: header
-          name: X-API-Key
-          required: false
-          schema:
-            type: string
-      responses:
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "200":
-          content:
-            application/json:
-              examples:
-                response:
-                  value:
-                    - "jo.hn@domain.tld, john@domain.tld"
-              schema:
-                type: array
-                items:
-                  type: string
-          description: OK
-          headers: {}
-      summary: Get dot addressing collisions
-      tags:
-        - Domains
   "/api/v1/get/domain/{id}":
     get:
       parameters:
@@ -4447,8 +4384,6 @@ paths:
                       relayhost: "0"
                       plus_addressing_in: "1"
                       plus_addressing_out: "1"
-                      dot_addressing_in: "0"
-                      dot_addressing_out: "0"
                       rl: false
                       tags: ["tag1", "tag2"]
                     - active: "1"
@@ -4474,8 +4409,6 @@ paths:
                       relayhost: "0"
                       plus_addressing_in: "1"
                       plus_addressing_out: "1"
-                      dot_addressing_in: "0"
-                      dot_addressing_out: "0"
                       rl: false
                       tags: ["tag3", "tag4"]
           description: OK
@@ -5006,13 +4939,9 @@ paths:
                         tls_enforce_out: "0"
                         plus_addressing_in: "1"
                         plus_addressing_out: "1"
-                        dot_addressing_in: "1"
-                        dot_addressing_out: "1"
                       addressing_effective:
                         plus_addressing_in: 1
                         plus_addressing_out: 1
-                        dot_addressing_in: 0
-                        dot_addressing_out: 0
                       domain: doman3.tld
                       is_relayed: 0
                       local_part: info
